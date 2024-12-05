@@ -1,10 +1,23 @@
-import express, { Request, Response } from "express";
+import express from "express";
+import { configureMiddleware } from "./config/middleware";
+import { errorHandler } from "./middlewares/errorHandler";
+import { requestLogger } from "./middlewares/requestLogger";
 
 const app = express();
-const port = 3000;
 
-app.get("/", (req: Request, res: Response) => {
+configureMiddleware(app);
+
+app.use(requestLogger);
+
+app.get("/", (req, res) => {
   res.send("Hello World!");
 });
 
-app.listen(port, () => console.log(`Example app listening on port ${port}!`));
+app.use(errorHandler);
+
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+  console.log(`Server is running on port ${PORT}`);
+});
+
+export default app;
