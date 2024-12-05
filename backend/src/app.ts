@@ -2,12 +2,15 @@ import express from "express";
 import { configureMiddleware } from "./config/middleware";
 import { errorHandler } from "./middlewares/errorHandler";
 import { requestLogger } from "./middlewares/requestLogger";
+import authRoutes from "./routes/authRoutes";
 
 const app = express();
 
 configureMiddleware(app);
-
 app.use(requestLogger);
+
+// Routes
+app.use("/api/auth", authRoutes);
 
 app.get("/", (req, res) => {
   res.send("Hello World!");
