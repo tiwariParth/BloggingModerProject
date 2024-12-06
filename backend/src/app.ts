@@ -3,6 +3,7 @@ import { configureMiddleware } from "./config/middleware";
 import { errorHandler } from "./middlewares/errorHandler";
 import { requestLogger } from "./middlewares/requestLogger";
 import authRoutes from "./routes/authRoutes";
+import postRoutes from "./routes/postRoutes";
 
 const app = express();
 
@@ -11,6 +12,7 @@ app.use(requestLogger);
 
 // Routes
 app.use("/api/auth", authRoutes);
+app.use("/api/posts", postRoutes);
 
 app.get("/", (req, res) => {
   res.send("Hello World!");
