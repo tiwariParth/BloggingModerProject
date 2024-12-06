@@ -10,7 +10,6 @@ const app = express();
 configureMiddleware(app);
 app.use(requestLogger);
 
-// Routes
 app.use("/api/auth", authRoutes);
 app.use("/api/posts", postRoutes);
 
