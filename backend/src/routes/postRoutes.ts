@@ -7,13 +7,25 @@ import {
   updatePost,
   deletePost,
 } from "../controllers/postController";
+import {
+  createPostValidator,
+  updatePostValidator,
+} from "../validators/postvalidator";
+import { validate } from "../middlewares/validatorMiddleware";
 
 const router = Router();
 
 router.use(protect);
 
-router.route("/").get(getAllPosts).post(createPost);
+router
+  .route("/")
+  .get(getAllPosts)
+  .post(createPostValidator, validate, createPost);
 
-router.route("/:id").get(getPost).patch(updatePost).delete(deletePost);
+router
+  .route("/:id")
+  .get(getPost)
+  .patch(updatePostValidator, validate, updatePost)
+  .delete(deletePost);
 
 export default router;
