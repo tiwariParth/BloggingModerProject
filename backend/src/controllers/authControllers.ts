@@ -18,7 +18,6 @@ export const register = async (
   try {
     const { email, password, name } = req.body;
 
-    // Check if user exists
     const existingUser = await prisma.user.findUnique({
       where: { email },
     });
@@ -27,10 +26,8 @@ export const register = async (
       throw new AppError("Email already in use", 400);
     }
 
-    // Hash password
     const hashedPassword = await hashPassword(password);
 
-    // Create user
     const user = await prisma.user.create({
       data: {
         email,
@@ -44,7 +41,6 @@ export const register = async (
       },
     });
 
-    // Generate token
     const token = generateToken({ userId: user.id, email: user.email });
 
     res.status(201).json({
@@ -67,7 +63,6 @@ export const login = async (
   try {
     const { email, password } = req.body;
 
-    // Find user
     const user = await prisma.user.findUnique({
       where: { email },
     });
@@ -75,8 +70,6 @@ export const login = async (
     if (!user || !(await comparePasswords(password, user.password))) {
       throw new AppError("Invalid email or password", 401);
     }
-
-    // Generate token
     const token = generateToken({ userId: user.id, email: user.email });
 
     res.status(200).json({
